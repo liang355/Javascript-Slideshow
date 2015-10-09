@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSCI4131 HW3</title>
+    <link rel="stylesheet" type="text/css" href="assignment2.css">
+</head>
+
+<script>
+    //Create an array of building objects
+    var building = [];
+    building[0] = {
+        name: "Armory",
+        architect: "Charles Aldrich",
+        description: "Built for athletics and military drill, as well as performing arts and social activities. Memorial" +
+        " plaques at the front entrance honor students, faculty, and alumni who fought in the Spanish-American War.",
+        year: 1896,
+        imgSrc: "Datafiles/building_images/armory.jpg"
+    };
+    building[1] = {
+        name: "Pillsbury Hall",
+        architect: "Leroy Buffington with Harvey Ellis",
+        description: "Built as Science Hall. Named for Governor John S. Pillsbury.",
+        year: 1889,
+        imgSrc: "Datafiles/building_images/pillsbury.jpg"
+    };
+    building[2] = {
+        name: "Folwell Hall",
+        architect: "Clarence H. Johnston, Sr.",
+        description: "When Old Main burned in 1904, Folwell Hall was built to house displaced departments. Named for " +
+        "William Watts Folwell, first president of the University, 1869-84.",
+        year: 1907,
+        imgSrc: "Datafiles/building_images/folwell.jpg"
+    };
+    building[3] = {
+        name: "Jones Hall",
+        architect: "Charles Aldrich",
+        description: "Built as Physics Building. Named for Frederick S. Jones, professor of physics and dean of " +
+        "the College of Engineering.",
+        year: 1901,
+        imgSrc: "Datafiles/building_images/jones.jpg"
+    };
+    building[4] = {
+        name: "Pillsbury Statue",
+        architect: "Daniel C. French, sculptor",
+        description: "Pillsbury statue located across the street from Burton Hall.",
+        year: 1900,
+        imgSrc: "Datafiles/building_images/statue.jpg"
+    };
+    building[5] = {
+        name: "Wesbrook Hall",
+        architect: "Frederick Corser",
+        description: "Built as Laboratory of Medical Science. In 1912, dentistry moved here. Named for Frank Wesbrook, " +
+        "professor of pathology and bacteriology and dean of the College of Medicine and Surgery.",
+        year: 1898,
+        imgSrc: "Datafiles/building_images/wesbrook.jpg"
+    };
+    building[6] = {
+        name: "Nicholson Hall",
+        architect: "LeRoy Buffington with Harvey Ellis",
+        description: "Built as chemical laboratory. In 1914, chemistry moved to the mall area and Nicholson was " +
+        "remodeled for the men's union until Coffman Memorial Union was built as a coed student union. Named for " +
+        "Edward E. Nicholson, professor of chemistry and later dean of Student Affairs.",
+        year: 1890,
+        imgSrc: "Datafiles/building_images/nicholson.jpg"
+    };
+    building[7] = {
+        name: "Eddy Hall",
+        architect: "LeRoy Buffington",
+        description: "Built as Mechanic Arts. It is the oldest existing building on campus. Named for Henry Turner Eddy, " +
+        "professor of engineering and mathematics and dean of the Graduate School.",
+        year: 1886,
+        imgSrc: "Datafiles/building_images/eddy.jpg"
+    };
+    building[8] = {
+        name: "Music Education",
+        architect: "Warren H. Hayes",
+        description: "Built as Student Christian Association building. Acquired by the University, it housed Child " +
+        "Welfare and Music Education.",
+        year: 1888,
+        imgSrc: "Datafiles/building_images/music.jpg"
+    };
+    building[9] = {
+        name: "Wulling Hall",
+        architect: "Allen Stem and Charles Reed",
+        description: "Built as Medical Hall; named Millard Hall in 1906. Fire damaged the building. It later became " +
+        "the site for the pharmacy building. Named for Frederick J. Wulling, first dean and founder of the College of Pharmacy.",
+        year: 1892,
+        imgSrc: "Datafiles/building_images/wulling.jpg"
+    };
+
+
+    var counter = 0; //a global variable to label building objects;
+    var timeout; // a global variable to catch timeout event
+    var delay; // a global variable to monitor delay duration in timeout
+    var enableButton = true; //a global variable to enable/disable buttons
+    var slideStart = false; //a global variable to mark the start and end of slide show
+    var flag = "up";
+
+    var imgID = [];
+    imgID[0] = "imgArmory";
+    imgID[1] = "imgPillsbury";
+    imgID[2] = "imgFolwell";
+    imgID[3] = "imgJones";
+    imgID[4] = "imgStatue";
+    imgID[5] = "imgWesbrook";
+    imgID[6] = "imgNicholson";
+    imgID[7] = "imgEddy";
+    imgID[8] = "imgMusic";
+    imgID[9] = "imgWulling";
+
+    /*------------------------------------Static Display Part-----------------------------------------*/
+
+    //function: Display both image and building info
+    function display(i){
+        var bigImg = document.getElementById("bigImage");
+        bigImg.src = building[i].imgSrc;
+        bigImg.style.visibility = "visible";
+        displayInfo(i);
+        counter = i;
+    }
+
+    //function: display a type of building info based on selected value(NONE, ARCHITECT, YEAR, DESCRIPTION)
+    function displayInfo(j){
+        var infoDisplay = document.getElementById("buildingInfo");
+        var infoType = document.getElementById("selectInfo").value;
+
+        if(infoType == "NONE"){
+            infoDisplay.innerHTML = "";
+        }else if(infoType == "ARCHITECT"){
+            infoDisplay.innerHTML = building[j].architect;
+        }else if(infoType == "YEAR"){
+            infoDisplay.innerHTML = building[j].year;
+        }else{
+            infoDisplay.innerHTML = building[j].description;
+        }
+    }
+
+    function fadeIn(){
+        flag = "up";
+        setTimeout(function(){
+            setOpacity0();
+        }, 100);
+    }
+
+    function fadeOut(){
+        flag = "down";
+        setTimeout(function(){
+            setOpacity4();
+        }, 100);
+    }
+
+    //functions: set different levels of opacity of the big image
+    function setOpacity0(){
+        var bigImg = document.getElementById("bigImage");
+        bigImg.style.opacity = "0";
+        if(flag == "up"){
+            setTimeout(function(){
+                setOpacity1();
+            }, 100);
+        }
+    }
+
+    function setOpacity1(){
+        var bigImg = document.getElementById("bigImage");
+        bigImg.style.opacity = "0.25";
+        if(flag == "down"){
+            setTimeout(function(){
+                setOpacity0();
+            }, 100);
+        }else if(flag == "up"){
+            setTimeout(function(){
+                setOpacity3();
+            }, 100);
+        }
+    }
+
+    function setOpacity2(){
+        var bigImg = document.getElementById("bigImage");
+        bigImg.style.opacity = "0.5";
+        if(flag == "down"){
+            setTimeout(function(){
+                setOpacity1();
+            }, 100);
+        }else if(flag == "up"){
+            setTimeout(function(){
+                setOpacity3();
+            }, 100);
+        }
+    }
+
+    function setOpacity3(){
+        var bigImg = document.getElementById("bigImage");
+        bigImg.style.opacity = "0.75";
+        if(flag == "down"){
+            setTimeout(function(){
+                setOpacity2();
+            }, 100);
+        }else if(flag == "up"){
+            setTimeout(function(){
+                setOpacity4();
+            }, 100);
+        }
+    }
+
+    function setOpacity4(){
+        var bigImg = document.getElementById("bigImage");
+        bigImg.style.opacity = "1";
+        if(flag == "down"){
+            setTimeout(function(){
+                setOpacity3();
+            }, 100);
+        }
+    }
+
+    //function: when "start" button is clicked
+    function changeImage(i){
+        resetBorder();
+        display(counter);
+        fadeOut();
+        counter = i;
+        redBorder();
+        setTimeout(function(){
+            display(i);
+            fadeIn();
+        }, 500);
+    }
+
+    function start(){
+        if(enableButton == true){
+            changeImage(0);
+        }else{
+            alert("Button disabled: slide show being played")
+        }
+    }
+
+    //function: when "previous" button is clicked
+    function previous(){
+        if(enableButton == true){
+            display(counter);
+            fadeOut();
+            resetBorder();
+            if(counter == 0){
+                counter = 9;
+            }else{
+                counter--;
+            }
+            redBorder();
+            setTimeout(function(){
+                display(counter);
+                fadeIn();
+            }, 500);
+        }else{
+            alert("Button disabled: slide show being played")
+        }
+    }
+
+    //function: when "next" button is clicked
+    function next(){
+        if(enableButton == true){
+            display(counter);
+            fadeOut();
+            resetBorder();
+            counter++;
+            counter = counter % 10;
+            redBorder();
+            setTimeout(function(){
+                display(counter);
+                fadeIn();
+            }, 500);
+        }else{
+            alert("Button disabled: slide show being played")
+        }
+    }
+
+    //function: when an option in selection bar is clicked
+    function selectInfo(){
+        var x = document.getElementById("bigImage");
+        if(x.style.visibility == "visible"){
+            displayInfo(counter);
+        }
+    }
+
+    function redBorder(){
+        var x = document.getElementById(imgID[counter]);
+        x.style.borderColor = "red";
+        x.style.borderStyle = "solid";
+        x.style.borderWidth = "2px";
+    }
+
+    function resetBorder(){
+        var x = document.getElementById(imgID[counter]);
+        x.style.borderStyle = "none";
+    }
+
+    /*--------------------------------------Slide Show Part-------------------------------------------*/
+
+    //function: check the value of range input used to determine length of delay
+    function checkSpeed(){
+        var x = document.getElementById("slider").value;
+        if(x == 0){
+            delay = 10000;
+        }else if(x == 1){
+            delay = 1000;
+        }
+    }
+
+    function firstSlide(){
+        redBorder();
+        checkSpeed();
+        display(counter);
+        fadeIn();
+    }
+
+    function slideShow(){
+        checkSpeed();
+        display(counter);
+        fadeOut();
+        resetBorder();
+        counter++;
+        counter = counter % 10;
+        redBorder();
+        setTimeout(function(){
+            display(counter);
+            fadeIn();
+        }, 500);
+        timeout = setTimeout(function(){
+            slideShow();
+            clearTimeout(this);
+        }, delay);
+    }
+
+    function startSlideShow(){
+        if(slideStart == false){
+            slideStart = true;
+            enableButton = false;
+            firstSlide();
+            setTimeout(function(){
+                slideShow();
+            }, delay);
+        }else{
+            alert("A slide show has already started, please stop the current slide show before you start another one.");
+        }
+    }
+
+    function stopSlideShow(){
+        if(slideStart == true){
+            clearTimeout(timeout);
+            enableButton = true;
+            slideStart = false;
+        }else{
+            alert("Slide show had already stopped");
+        }
+    }
+
+</script>
+
+<body>
+    <div id="buttonSection1">
+        <button id="start" onclick="start()">start</button>
+        <button id="previous" onclick="previous()">previous</button>
+        <button id="next" onclick="next()">next</button>
+
+        <label for="selectInfo" id="labelSelect">Select information type: </label>
+        <select id="selectInfo" onchange="selectInfo()">
+            <option value="NONE">None</option>
+            <option value="ARCHITECT">Architect</option>
+            <option value="YEAR">Year</option>
+            <option value="DESCRIPTION" selected>Description</option>
+        </select>
+    </div><br>
+
+    <div id="thumbnailList">
+        <img src="Datafiles/building_images/armory.jpg" id="imgArmory" class="thumbnail" onclick="changeImage(0)">
+        <img src="Datafiles/building_images/pillsbury.jpg" id="imgPillsbury" class="thumbnail" onclick="changeImage(1)">
+        <img src="Datafiles/building_images/folwell.jpg" id="imgFolwell" class="thumbnail" onclick="changeImage(2)">
+        <img src="Datafiles/building_images/jones.jpg" id="imgJones" class="thumbnail" onclick="changeImage(3)">
+        <img src="Datafiles/building_images/statue.jpg" id="imgStatue" class="thumbnail" onclick="changeImage(4)">
+        <img src="Datafiles/building_images/wesbrook.jpg" id="imgWesbrook" class="thumbnail" onclick="changeImage(5)">
+        <img src="Datafiles/building_images/nicholson.jpg" id="imgNicholson" class="thumbnail" onclick="changeImage(6)">
+        <img src="Datafiles/building_images/eddy.jpg" id="imgEddy" class="thumbnail" onclick="changeImage(7)">
+        <img src="Datafiles/building_images/music.jpg" id="imgMusic" class="thumbnail" onclick="changeImage(8)">
+        <img src="Datafiles/building_images/wulling.jpg" id="imgWulling" class="thumbnail" onclick="changeImage(9)">
+    </div><br>
+
+    <div id="buttonSection2">
+        <button id="startSlideShow" onclick="startSlideShow()">Start Slide Show</button>
+        <button id="stopSlideShow" onclick="stopSlideShow()">Stop Slide Show</button><br><br>
+        <label for="slider"></label>
+        Slow <input type="range" id="slider" min="0" max="1" value="1"> Fast
+    </div><br>
+
+    <div id="imageDisplay">
+        <img src="Datafiles/building_images/armory.jpg" id="bigImage">
+        <p id="buildingInfo"></p>
+    </div>
+
+</body>
+</html>
